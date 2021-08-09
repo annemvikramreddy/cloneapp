@@ -1,0 +1,80 @@
+.background {
+  min-height: 100vh;
+  background-color: white;
+  background-size: cover;
+}
+.home-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  flex-wrap: wrap;
+
+  width: 90%;
+  max-width: 1110px;
+}
+
+.flex {
+  display: flex;
+
+  align-items: center;
+  padding: 10px;
+}
+
+.card {
+  padding: 20px;
+  background-color: #e4eded;
+  margin: 10px;
+  height: 220px;
+  width: 240px;
+  border-radius: 20px;
+  box-shadow: 5px 10px #888888;
+}
+
+.description {
+  font-family: 'Arial';
+  font-size: 16px;
+}
+
+.genres {
+  font-family: 'caveat';
+  font-size: 15px;
+}
+.button-pagination {
+  font-size: 20px;
+  margin: 10px;
+}
+
+.icon {
+  font-size: 25px;
+  border-radius: 35px;
+  height: 30px;
+  width: 30px;
+  margin: 20px;
+}
+
+.search-bar {
+  text-align: center;
+}
+
+.head {
+  color: black;
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .home-container {
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 50px;
+  }
+}
+
+.page-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
