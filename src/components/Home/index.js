@@ -2,10 +2,18 @@ import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import {FaLessThan, FaGreaterThan} from 'react-icons/fa'
 import Header from '../Header'
+import Cards from '../Cards'
 import './index.css'
 
 class Home extends Component {
-  state = {movies: [], count: 1, searchText: '', loader: false}
+  state = {
+    movies: [],
+    count: 1,
+    searchText: '',
+    loader: false,
+    modal: false,
+    Data: '',
+  }
 
   componentDidMount() {
     this.MoviesAPI()
@@ -54,9 +62,14 @@ class Home extends Component {
     this.setState({movies: updatedData, loader: false})
   }
 
-  toggle = () => {
+  toggle = uuid => {
+    const {movies} = this.state
+    console.log(uuid)
+    const filteredData = movies.filter(each => each.uuid === uuid)
+
     this.setState(prevState => ({
       modal: !prevState.modal,
+      Data: filteredData,
     }))
   }
 
@@ -71,10 +84,19 @@ class Home extends Component {
   )
 
   render() {
-    const {movies, count, searchText, loader} = this.state
+    const {movies, count, searchText, loader, modal, Data} = this.state
+
+    if (modal === true) {
+      const {title, description, genres} = Data[0]
+      this.title = title
+      this.description = description
+      this.genres = genres
+    }
+
     const searchResults = movies.filter(each =>
       each.title.toLowerCase().includes(searchText.toLowerCase()),
     )
+
     return loader ? (
       this.renderLoader()
     ) : (
@@ -85,22 +107,9 @@ class Home extends Component {
           <input type="text" onChange={this.change} />
         </div>
         <div className="home-container">
-          {searchResults.map(each => {
-            const url = `https://ui-avatars.com/api/?name=${each.title}&background=random`
-            const description = `${each.description}`.slice(0, 15)
-            const title = `${each.title}`.slice(0, 15)
-            console.log(description)
-            return (
-              <div className="card" key={each.uuid}>
-                <div className="flex">
-                  <img src={url} alt={each.title} className="icon" />
-                  <p>{title}</p>
-                </div>
-                <p className="description">Description : {description}</p>
-                <p className="genres">Genres : {each.genres}</p>
-              </div>
-            )
-          })}
+          {searchResults.map(each => (
+            <Cards toggle={this.toggle} movies={each} key={each.uuid} />
+          ))}
         </div>
         <div className="page-content">
           <button
@@ -119,6 +128,24 @@ class Home extends Component {
             <FaGreaterThan />
           </button>
         </div>
+        {modal && (
+          <div className="modal">
+            <div className="overlay">
+              <div className="modal-content">
+                <h1 className="head">{this.title}</h1>
+                <p>{this.description}</p>
+                <p>{this.genres}</p>
+                <button
+                  type="button"
+                  className="close-modal"
+                  onClick={this.toggle}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     )
   }
